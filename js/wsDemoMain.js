@@ -26,10 +26,21 @@ $(document).ready(function() {
     var connection = new WebSocket("ws://127.0.0.1:" + webSocketPort);
 
     connection.onopen = function() {
+
         let nick = "";
-        do {
-            nick = window.prompt("Enter your nickname", "");
-        } while(nick == "" || nick == null);
+        if (Cookies.enabled && Cookies.get("ws-chat_username") !== undefined) {
+            //sdfsdf
+            nick = Cookies.get("ws-chat_username");
+        } else {
+            
+            do {
+                nick = window.prompt("Enter your nickname", "");
+            } while(nick === "" || nick === null);
+
+            if (Cookies.enabled ) {
+                Cookies.set("ws-chat_username", nick, { expires: 2592000}); //expires in 30 days (30 * 24 * 60 * 60 seconds)
+            }
+        }
         myName = nick;
         connection.send(myName);
         addUser(myName);
@@ -53,6 +64,7 @@ $(document).ready(function() {
 
         if (json.type === "connect") {
             addUser(json.data);
+            $("#messageViewHeader").html("You're identified as <b>"+json.data+"</b>");
             //console.log("connect");
             //console.log(serverMessageHistory);
             //console.log(serverUserHistory);
@@ -151,9 +163,9 @@ $(document).ready(function() {
     $("#sendBtn").on("click", function() {
         //connection.send(msg);
         if ($("#messageText").val().trim().length !== 0) {
-            let msg = "<b>@"+myName+"</b>: "+$("#messageText").val();
-            //console.log("msg");
-            //console.log(msg);
+            let msg = "<b>@"+myName+"</b>: <pre>"+$("#messageText").val()+"</pre>";
+            console.log("msg");
+            console.log(msg);
             connection.send(msg);
         }
         $("#messageText").val("");

@@ -67,6 +67,8 @@ var server = http.createServer(function(request, response) {
         serveFile(response, "." + request.url, "text/css");
     } else if (request.url === "/js/bootstrap-4.1.1.min.js") {
         serveFile(response, "." + request.url, "text/javascript");
+    } else if (request.url === "/js/cookies.min.1.2.3.js") {
+        serveFile(response, "." + request.url, "text/javascript");
     } else if (request.url === "/webfonts/fa-solid-900.ttf") {
         serveFile(response, "." + request.url, "font/ttf");
     } else if (request.url === "/webfonts/fa-solid-900.woff") {
