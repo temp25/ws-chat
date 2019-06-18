@@ -9,6 +9,7 @@ $(document).ready(function() {
     let serverUserHistory = {};
 
     var webSocketPort = 2573;
+    var host = location.origin.replace(/^http/, 'ws').replace(/^https/, 'wss')
     window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     if(!window.WebSocket){
@@ -21,7 +22,7 @@ $(document).ready(function() {
         return;
     }
     
-    var connection = new WebSocket("wss://wsnc.herokuapp.com:" + webSocketPort);
+    var connection = new WebSocket(host);
 
     connection.onopen = function() {
 
@@ -45,7 +46,7 @@ $(document).ready(function() {
     };
 
     connection.onerror = function(error) {
-        content.html($("<p>"+ {
+        mainContent.html($("<p>"+ {
             text: "Sorry, but there's some problem with your connection or server is down",
             style: "font-size: 20px; color: red;"
         }));
