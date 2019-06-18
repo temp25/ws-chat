@@ -1,8 +1,6 @@
 $(document).ready(function() {
 
     var mainContent = $("#content");
-    //var input = $("#input");
-    //var status = $("#status");
 
     var myColor = false;
     var myName = false;
@@ -22,8 +20,8 @@ $(document).ready(function() {
         );
         return;
     }
-
-    var connection = new WebSocket("ws://127.0.0.1:" + webSocketPort);
+    
+    var connection = new WebSocket("ws://wsnc.herokuapp.com:" + webSocketPort);
 
     connection.onopen = function() {
 
@@ -65,15 +63,10 @@ $(document).ready(function() {
         if (json.type === "connect") {
             addUser(json.data);
             $("#messageViewHeader").html("You're identified as <b>"+json.data+"</b>");
-            //console.log("connect");
-            //console.log(serverMessageHistory);
-            //console.log(serverUserHistory);
             for (let i = 0; i < serverMessageHistory.length; i++) {
                 addMessage(getDecodedHtmlText(serverMessageHistory[i].text), getTimeStamp(new Date(serverMessageHistory[i].time)), myName != serverMessageHistory[i].author);
             }
             for (let user in  serverUserHistory) {    
-                //addMessage(serverMessageHistory[i].text, getTimeStamp(new Date(serverMessageHistory[i].time)), myName != serverMessageHistory[i].author);
-                //console.log("Adding user "+user);
                 addUser(user, serverUserHistory[user]);
             }
             serverMessageHistory = [];
@@ -82,19 +75,13 @@ $(document).ready(function() {
             updateUserStatus(json.data, false);
         } else if (json.type === "color") {
             myColor = json.data;
-            //status.text(myName + ":").css("color", myColor);
-            //input.removeAttr("disabed").focus();
         } else if (json.type === "history") {
             for (let i = 0; i < json.data.messages.length; i++) {
-                //addMessage(json.data[i].author, json.data[i].text, json.data[i].color, new Date(json.data[i].time));
                 serverMessageHistory.push(json.data.messages[i]);
             }
             serverUserHistory = json.data.users;
         } else if (json.type === "message") {
-            /* console.log("json.data.text");
-            console.log(json.data.text); */
             addMessage(getDecodedHtmlText(json.data.text), getTimeStamp(new Date(json.data.time)), myName != json.data.author);
-            //addMessage(json.data.author, json.data.text, json.data.color, new Date(json.data.time));
         } else {
             console.log("Hmm... I've never seen JSON like this:", json);
         }
@@ -156,12 +143,9 @@ $(document).ready(function() {
             scrollTop: $("#messageView")[0].scrollHeight
         }, 333);
 
-        //$("#messageView").scrollTop($("#messageView")[0].scrollHeight);
-
     }
 
     $("#sendBtn").on("click", function() {
-        //connection.send(msg);
         if ($("#messageText").val().trim().length !== 0) {
             let msg = "<b>@"+myName+"</b>: <pre>"+$("#messageText").val()+"</pre>";
             console.log("msg");
@@ -188,8 +172,7 @@ $(document).ready(function() {
         hh = lPadToTwo(hh);
         dd = lPadToTwo(dd);
         SSS = lPad(SSS, 3);
-    
-        //return `${dd}/${MM}/${yyyy} ${hh}:${mm}:${ss}.${SSS}`;
+        
         return dd+"/"+MM+"/"+yyyy+" "+hh+":"+mm+":"+ss+"."+SSS;
     }
     
