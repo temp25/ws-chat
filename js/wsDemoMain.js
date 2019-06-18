@@ -21,7 +21,7 @@ $(document).ready(function() {
         return;
     }
     
-    var connection = new WebSocket("ws://wsnc.herokuapp.com:" + webSocketPort);
+    var connection = new WebSocket("wss://wsnc.herokuapp.com:" + webSocketPort);
 
     connection.onopen = function() {
 
