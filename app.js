@@ -2,7 +2,7 @@
 
 process.title = "websocket-node-chat";
 
-var webSocketServerPort = 2573;
+var webSocketServerPort = process.env.PORT || 2573; //get PORT from environment if unavailable, fallback to default port which is 2573
 
 var webSocketServer = require("websocket").server;
 var http = require("http");
