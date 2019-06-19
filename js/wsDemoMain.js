@@ -42,6 +42,7 @@ $(document).ready(function() {
         }
         myName = nick;
         connection.send(myName);
+        $("#messageViewHeader").html("You're identified as <b>"+json.data+"</b>");
         addUser(myName);
     };
 
@@ -63,7 +64,6 @@ $(document).ready(function() {
 
         if (json.type === "connect") {
             addUser(json.data);
-            $("#messageViewHeader").html("You're identified as <b>"+json.data+"</b>");
             for (let i = 0; i < serverMessageHistory.length; i++) {
                 addMessage(getDecodedHtmlText(serverMessageHistory[i].text), getTimeStamp(new Date(serverMessageHistory[i].time)), myName != serverMessageHistory[i].author);
             }
