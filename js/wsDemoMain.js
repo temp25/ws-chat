@@ -13,7 +13,7 @@ $(document).ready(function() {
     window.WebSocket = window.WebSocket || window.MozWebSocket;
 
     if(!window.WebSocket){
-        $("#content").html($("<p>", {
+        mainContent.html($("<p>", {
             class: "animate-fade",
             html: "<b>Sorry, but your browser doesn't support WebSocket.</b>",
             style: "font-size: 20px; color: red;"
@@ -28,7 +28,6 @@ $(document).ready(function() {
 
         let nick = "";
         if (Cookies.enabled && Cookies.get("ws-chat_username") !== undefined) {
-            //sdfsdf
             nick = Cookies.get("ws-chat_username");
         } else {
             
@@ -42,7 +41,7 @@ $(document).ready(function() {
         }
         myName = nick;
         connection.send(myName);
-        $("#messageViewHeader").html("You're identified as <b>"+json.data+"</b>");
+        $("#messageViewHeader").html("You're identified as <b>"+myName+"</b>");
         addUser(myName);
     };
 
@@ -112,7 +111,7 @@ $(document).ready(function() {
                     "<div class=\"d-flex bd-highlight\">" +
                         "<div class=\"user_info\">" +
                             "<span>"+userName+"</span>" +
-                            "<p>"+userName+" is online</p>" +
+                            "<p>"+userName+" is Online</p>" +
                         "</div>" +
                     "</div>" +
                 "</li>"
@@ -148,7 +147,7 @@ $(document).ready(function() {
 
     $("#sendBtn").on("click", function() {
         if ($("#messageText").val().trim().length !== 0) {
-            let msg = "<b>@"+myName+"</b>: <pre>"+$("#messageText").val()+"</pre>";
+            let msg = "<b>"+myName+"</b>: <pre>"+$("#messageText").val()+"</pre>";
             console.log("msg");
             console.log(msg);
             connection.send(msg);
