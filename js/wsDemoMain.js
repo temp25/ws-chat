@@ -81,6 +81,9 @@ $(document).ready(function() {
             }
             serverUserHistory = json.data.users;
         } else if (json.type === "message") {
+            console.log("message : "+message);
+            console.log("json.data.text : "+json.data.text);
+            console.log("getDecodedHtmlText(json.data.text) : "+getDecodedHtmlText(json.data.text));
             addMessage(getDecodedHtmlText(json.data.text), getTimeStamp(new Date(json.data.time)), myName != json.data.author);
         } else {
             console.log("Hmm... I've never seen JSON like this:", json);
@@ -94,7 +97,12 @@ $(document).ready(function() {
     }, 3000);
 
     function getDecodedHtmlText(content) {
-        return $("<p/>").html(content).text();
+        return $("<p/>")
+                .html(content)
+                .text()
+                .replace(/</g, "&lt;")  //escape all less than symbol
+                .replace(/>/g, "&gt;")  //escape all greater than symbol
+                .replace(/&lt;(\/)?(b|pre)&gt;/g, "<$1$2>"); //unescape greater and lesser than symbol in start and end for bold and pre tags
     }
 
     function addUser(userName, isOnline) {
